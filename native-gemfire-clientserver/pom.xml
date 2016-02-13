@@ -71,17 +71,38 @@
 				<executions>
 					<execution>
 						<goals>
-							<goal>exec</goal>
+							<goal>java</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<executable>java</executable>
-					<arguments>
-						<argument>-classpath</argument>
-						<classpath/>
-						<argument>${app.mainClass}</argument>
-					</arguments>
+					<systemProperties>
+						<systemProperty>
+							<key>gemfire.log.level</key>
+							<value>${gemfire.log.level}</value>
+						</systemProperty>
+						<systemProperty>
+							<key>gemfire.locator.host-port</key>
+							<value>${gemfire.locator.host-port}</value>
+						</systemProperty>
+						<systemProperty>
+							<key>gemfire.manager.port</key>
+							<value>${gemfire.manager.port}</value>
+						</systemProperty>
+						<systemProperty>
+							<key>gemfire.cache.server.bind-address</key>
+							<value>${gemfire.cache.server.bind-address}</value>
+						</systemProperty>
+						<systemProperty>
+							<key>gemfire.cache.server.hostname-for-clients</key>
+							<value>${gemfire.cache.server.hostname-for-clients}</value>
+						</systemProperty>
+						<systemProperty>
+							<key>gemfire.cache.server.port</key>
+							<value>${gemfire.cache.server.port}</value>
+						</systemProperty>
+					</systemProperties>
+					<mainClass>${app.mainClass}</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

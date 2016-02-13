@@ -62,4 +62,50 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.4.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<systemProperties>
+						<systemProperty>
+							<key>gemfire.log.level</key>
+							<value>${gemfire.log.level}</value>
+						</systemProperty>
+						<systemProperty>
+							<key>gemfire.locator.host-port</key>
+							<value>${gemfire.locator.host-port}</value>
+						</systemProperty>
+						<systemProperty>
+							<key>gemfire.manager.port</key>
+							<value>${gemfire.manager.port}</value>
+						</systemProperty>
+						<systemProperty>
+							<key>gemfire.cache.server.bind-address</key>
+							<value>${gemfire.cache.server.bind-address}</value>
+						</systemProperty>
+						<systemProperty>
+							<key>gemfire.cache.server.hostname-for-clients</key>
+							<value>${gemfire.cache.server.hostname-for-clients}</value>
+						</systemProperty>
+						<systemProperty>
+							<key>gemfire.cache.server.port</key>
+							<value>${gemfire.cache.server.port}</value>
+						</systemProperty>
+					</systemProperties>
+					<mainClass>${app.mainClass}</mainClass>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>

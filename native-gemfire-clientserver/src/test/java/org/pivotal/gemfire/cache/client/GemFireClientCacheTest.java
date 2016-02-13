@@ -38,6 +38,7 @@ public class GemFireClientCacheTest {
 	public static void setupGemFire() {
 		clientCache = new ClientCacheFactory(gemfireProperties())
 			.setPoolFreeConnectionTimeout(5000) // 5 seconds
+			.setPoolIdleTimeout(TimeUnit.SECONDS.toMillis(10))
 			.setPoolMaxConnections(GemFireServerApplication.DEFAULT_MAX_CONNECTIONS)
 			.setPoolMinConnections(1)
 			.setPoolPingInterval(TimeUnit.SECONDS.toMillis(5))
@@ -45,8 +46,8 @@ public class GemFireClientCacheTest {
 			.setPoolRetryAttempts(1)
 			.setPoolSubscriptionEnabled(true)
 			.setPoolThreadLocalConnections(false)
-			.addPoolServer(System.getProperty("gemfire.client.server.host", "localhost"),
-				Integer.getInteger("gemfire.client.server.port", 12480))
+			.addPoolServer(System.getProperty("gemfire.cache.server.host", "localhost"),
+				Integer.getInteger("gemfire.cache.server.port", 12480))
 			.create();
 
 		ClientRegionFactory<Long, Long> cubesRegionFactory = clientCache.createClientRegionFactory(
@@ -60,7 +61,7 @@ public class GemFireClientCacheTest {
 
 	static Properties gemfireProperties() {
 		Properties gemfireProperties = new Properties();
-		gemfireProperties.setProperty("log-level", System.getProperty("gemfire.log-level", "config"));
+		gemfireProperties.setProperty("log-level", System.getProperty("gemfire.log.level", "config"));
 		return gemfireProperties;
 	}
 

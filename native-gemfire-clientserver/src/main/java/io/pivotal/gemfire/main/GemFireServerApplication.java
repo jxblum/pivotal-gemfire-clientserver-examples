@@ -3,6 +3,8 @@ package io.pivotal.gemfire.main;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.springframework.util.StringUtils;
+
 import com.gemstone.gemfire.cache.Cache;
 import com.gemstone.gemfire.cache.CacheFactory;
 import com.gemstone.gemfire.cache.CacheLoader;
@@ -23,11 +25,18 @@ import com.gemstone.gemfire.cache.server.CacheServer;
 public class GemFireServerApplication {
 
 	public static final int DEFAULT_MAX_CONNECTIONS = 100;
+	public static final int DEFAULT_MAX_TIME_BETWEEN_PINGS = 60000;
 
 	public static void main(String[] args) throws Exception {
 		Cache gemfireCache = gemfireCache(gemfireProperties());
 		cubesRegion(gemfireCache);
 		gemfireCacheServer(gemfireCache);
+		registerShutdownHook(gemfireCache);
+	}
+
+	static String systemProperty(String propertyName, String defaultValue) {
+		String propertyValue = System.getProperty(propertyName);
+		return (StringUtils.hasText(propertyValue) ? propertyValue : defaultValue);
 	}
 
 	static Properties gemfireProperties() {
@@ -35,11 +44,11 @@ public class GemFireServerApplication {
 
 		gemfireProperties.setProperty("name", GemFireServerApplication.class.getSimpleName());
 		gemfireProperties.setProperty("mcast-port", "0");
-		gemfireProperties.setProperty("log-level", System.getProperty("gemfire.log-level", "config"));
-		gemfireProperties.setProperty("locators", System.getProperty("gemfire.locators", "localhost[11235]"));
-		gemfireProperties.setProperty("start-locator", System.getProperty("gemfire.locators", "localhost[11235]"));
+		gemfireProperties.setProperty("log-level", systemProperty("gemfire.log.level", "config"));
+		gemfireProperties.setProperty("locators", systemProperty("gemfire.locator.host-port", "localhost[11235]"));
+		gemfireProperties.setProperty("start-locator", systemProperty("gemfire.locator.host-port", "localhost[11235]"));
 		gemfireProperties.setProperty("jmx-manager", "true");
-		gemfireProperties.setProperty("jmx-manager-port", System.getProperty("gemfire.jmx-manager-port", "1199"));
+		gemfireProperties.setProperty("jmx-manager-port", systemProperty("gemfire.manager.port", "1199"));
 		gemfireProperties.setProperty("jmx-manager-start", "true");
 
 		return gemfireProperties;
@@ -52,10 +61,11 @@ public class GemFireServerApplication {
 	static CacheServer gemfireCacheServer(Cache gemfireCache) throws IOException {
 		CacheServer gemfireCacheServer = gemfireCache.addCacheServer();
 
-		gemfireCacheServer.setBindAddress(System.getProperty("gemfire.cache.server.bind-address", "localhost"));
-		gemfireCacheServer.setHostnameForClients(System.getProperty("gemfire.cache.server.hostname-for-clients", "localhost"));
+		gemfireCacheServer.setBindAddress(systemProperty("gemfire.cache.server.bind-address", "localhost"));
+		gemfireCacheServer.setHostnameForClients(systemProperty("gemfire.cache.server.hostname-for-clients", "localhost"));
 		gemfireCacheServer.setPort(Integer.getInteger("gemfire.cache.server.port", 12480));
 		gemfireCacheServer.setMaxConnections(DEFAULT_MAX_CONNECTIONS);
+		gemfireCacheServer.setMaximumTimeBetweenPings(DEFAULT_MAX_TIME_BETWEEN_PINGS);
 		gemfireCacheServer.start();
 
 		return gemfireCacheServer;
@@ -82,6 +92,10 @@ public class GemFireServerApplication {
 			public void close() {
 			}
 		};
+	}
+
+	static void registerShutdownHook(Cache gemfireCache) {
+		Runtime.getRuntime().addShutdownHook(new Thread(gemfireCache::close, "GemFire Server Shutdown Thread"));
 	}
 
 }

@@ -2,6 +2,8 @@ package io.pivotal.gemfire.main;
 
 import java.util.Properties;
 
+import org.springframework.util.StringUtils;
+
 import com.gemstone.gemfire.cache.Cache;
 import com.gemstone.gemfire.cache.CacheFactory;
 import com.gemstone.gemfire.cache.CacheLoader;
@@ -18,8 +20,25 @@ import com.gemstone.gemfire.cache.LoaderHelper;
 @SuppressWarnings("unused")
 public class GemFireServerXmlApplication {
 
+	public static final String DEFAULT_MAX_CONNECTIONS = "100";
+	public static final String DEFAULT_MAX_TIME_BETWEEN_PINGS = "60000";
+
+	static {
+		System.setProperty("BIND_ADDRESS", systemProperty("gemfire.cache.server.bind-address", "localhost"));
+		System.setProperty("HOSTNAME_FOR_CLIENTS", systemProperty("gemfire.cache.server.hostname-for-clients",
+			"localhost"));
+		System.setProperty("PORT", systemProperty("gemfire.cache.server.port", "12480"));
+		System.setProperty("MAX_CONNECTIONS", DEFAULT_MAX_CONNECTIONS);
+		System.setProperty("MAX_TIME_BETWEEN_PINGS", DEFAULT_MAX_TIME_BETWEEN_PINGS);
+	}
+
 	public static void main(String[] args) throws Exception {
-		gemfireCache(gemfireProperties());
+		registerShutdownHook(gemfireCache(gemfireProperties()));
+	}
+
+	static String systemProperty(String propertyName, String defaultValue) {
+		String propertyValue = System.getProperty(propertyName);
+		return (StringUtils.hasText(propertyValue) ? propertyValue : defaultValue);
 	}
 
 	static Properties gemfireProperties() {
@@ -27,11 +46,11 @@ public class GemFireServerXmlApplication {
 
 		gemfireProperties.setProperty("name", GemFireServerXmlApplication.class.getSimpleName());
 		gemfireProperties.setProperty("mcast-port", "0");
-		gemfireProperties.setProperty("log-level", System.getProperty("gemfire.log-level", "config"));
-		gemfireProperties.setProperty("locators", System.getProperty("gemfire.locators", "localhost[11235]"));
-		gemfireProperties.setProperty("start-locator", System.getProperty("gemfire.locators", "localhost[11235]"));
+		gemfireProperties.setProperty("log-level", systemProperty("gemfire.log.level", "config"));
+		gemfireProperties.setProperty("locators", systemProperty("gemfire.locator.host-port", "localhost[11235]"));
+		gemfireProperties.setProperty("start-locator", systemProperty("gemfire.locator.host-port", "localhost[11235]"));
 		gemfireProperties.setProperty("jmx-manager", "true");
-		gemfireProperties.setProperty("jmx-manager-port", System.getProperty("gemfire.jmx-manager-port", "1199"));
+		gemfireProperties.setProperty("jmx-manager-port", systemProperty("gemfire.manager.port", "1199"));
 		gemfireProperties.setProperty("jmx-manager-start", "true");
 
 		return gemfireProperties;
@@ -39,6 +58,10 @@ public class GemFireServerXmlApplication {
 
 	static Cache gemfireCache(Properties gemfireProperties) {
 		return new CacheFactory(gemfireProperties).set("cache-xml-file", "server-cache.xml").create();
+	}
+
+	static void registerShutdownHook(Cache gemfireCache) {
+		Runtime.getRuntime().addShutdownHook(new Thread(gemfireCache::close, "GemFire Server Shutdown Thread"));
 	}
 
 	public static class SquareRootsCacheLoader implements CacheLoader<Long, Long>, Declarable {

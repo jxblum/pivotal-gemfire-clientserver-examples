@@ -17,6 +17,8 @@ import com.gemstone.gemfire.cache.Region;
 import com.gemstone.gemfire.cache.client.ClientCache;
 import com.gemstone.gemfire.cache.client.ClientCacheFactory;
 
+import io.pivotal.gemfire.main.GemFireServerXmlApplication;
+
 /**
  * The GemFireClientCacheXmlTest class...
  *
@@ -29,6 +31,12 @@ public class GemFireClientCacheXmlTest {
 
 	private static Region<Long, Long> squareRoots;
 
+	static {
+		System.setProperty("HOST", System.getProperty("gemfire.cache.server.host", "localhost"));
+		System.setProperty("PORT", System.getProperty("gemfire.cache.server.port", "12480"));
+		System.setProperty("MAX_CONNECTIONS", GemFireServerXmlApplication.DEFAULT_MAX_CONNECTIONS);
+	}
+
 	@BeforeClass
 	public static void setupGemFire() {
 		clientCache = new ClientCacheFactory(gemfireProperties()).set("cache-xml-file", "client-cache.xml").create();
@@ -37,7 +45,7 @@ public class GemFireClientCacheXmlTest {
 
 	static Properties gemfireProperties() {
 		Properties gemfireProperties = new Properties();
-		gemfireProperties.setProperty("log-level", System.getProperty("gemfire.log-level", "config"));
+		gemfireProperties.setProperty("log-level", System.getProperty("gemfire.log.level", "config"));
 		return gemfireProperties;
 	}
 

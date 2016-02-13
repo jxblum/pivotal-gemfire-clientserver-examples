@@ -2,8 +2,10 @@
 <!DOCTYPE client-cache PUBLIC  "-//GemStone Systems, Inc.//GemFire Declarative Caching 8.1//EN"
 	"http://www.gemstone.com/dtd/cache8_0.dtd">
 <client-cache>
-	<pool name="serverPool">
-		<server host="localhost" port="12480"/>
+	<pool name="serverPool" free-connection-timeout="5000" idle-timeout="5000" max-connections="${MAX_CONNECTIONS}"
+		  min-connections="1" ping-interval="5000" read-timeout="2000" retry-attempts="1" subscription-enabled="true"
+		  thread-local-connections="false">
+		<server host="${HOST}" port="${PORT}"/>
 	</pool>
 	<region name="SquareRoots">
 		<region-attributes  pool-name="serverPool" refid="PROXY"/>
