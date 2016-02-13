@@ -39,8 +39,8 @@ public class SpringGemFireServerApplication {
 	}
 
 	@Bean
-	Properties gemfireProperties(@Value("${spring.gemfire.log-level:config}") String logLevel,
-		@Value("${spring.gemfire.locator:localhost[11235]}") String locatorHostPort,
+	Properties gemfireProperties(@Value("${spring.gemfire.log.level:config}") String logLevel,
+		@Value("${spring.gemfire.locator.host-port:localhost[11235]}") String locatorHostPort,
 		@Value("${spring.gemfire.manager.port:1199}") String managerPort)
 	{
 		Properties gemfireProperties = new Properties();
