@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE cache PUBLIC  "-//GemStone Systems, Inc.//GemFire Declarative Caching 8.1//EN"
+	"http://www.gemstone.com/dtd/cache8_0.dtd">
+<cache>
+	<cache-server hostname-for-clients="localhost" port="12480"/>
+	<region name="SquareRoots" refid="PARTITION">
+		<region-attributes>
+			<key-constraint>java.lang.Long</key-constraint>
+			<value-constraint>java.lang.Long</value-constraint>
+			<cache-loader>
+				<class-name>io.pivotal.gemfire.main.GemFireServerXmlApplication$SquareRootsCacheLoader</class-name>
+			</cache-loader>
+		</region-attributes>
+	</region>
+</cache>

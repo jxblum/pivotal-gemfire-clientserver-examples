@@ -1,0 +1,6 @@
+connect --locator=localhost[11235]
+list members
+describe member --name=SpringGemFireServerApplication
+list regions
+describe region --name=/Squares
+get --region=/Squares --key=5 --key-class=java.lang.Long

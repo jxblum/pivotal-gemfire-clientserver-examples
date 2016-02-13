@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE client-cache PUBLIC  "-//GemStone Systems, Inc.//GemFire Declarative Caching 8.1//EN"
+	"http://www.gemstone.com/dtd/cache8_0.dtd">
+<client-cache>
+	<pool name="serverPool">
+		<server host="localhost" port="12480"/>
+	</pool>
+	<region name="SquareRoots">
+		<region-attributes  pool-name="serverPool" refid="PROXY"/>
+	</region>
+</client-cache>

@@ -1,0 +1,6 @@
+connect --locator=localhost[11235]
+list members
+describe member --name=GemFireServerXmlApplication
+list regions
+describe region --name=/SquareRoots
+get --region=/SquareRoots --key=25 --key-class=java.lang.Long

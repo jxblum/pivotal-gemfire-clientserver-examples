@@ -1,0 +1,6 @@
+connect --locator=localhost[11235]
+list members
+describe member --name=GemFireServerApplication
+list regions
+describe region --name=/Cubes
+get --region=/Cubes --key=5 --key-class=java.lang.Long
