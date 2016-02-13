@@ -14,7 +14,7 @@
 	<artifactId>native-gemfire-clientserver</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Native GemFire Client/Server Sample Application</name>
+	<name>Native GemFire Client/Server Example Application</name>
 	<description>
 		This module demonstrates a Pivotal GemFire client/server application configured with GemFire's public Java API.
 	</description>

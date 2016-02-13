@@ -6,15 +6,15 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>pivotal-gemfire-clientserver-parent</artifactId>
 		<groupId>io.pivotal</groupId>
+		<artifactId>pivotal-gemfire-clientserver-parent</artifactId>
 		<version>1.0.0.BUILD-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>spring-gemfire-clientserver-xml</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Spring GemFire Client/Server XML Sample Application</name>
+	<name>Spring GemFire Client/Server XML Example Application</name>
 	<description>
 		This module demonstrates a Pivotal GemFire client/server application configured with Spring (Data GemFire)
 		XML-based Configuration and bootstrapped with Spring Boot.

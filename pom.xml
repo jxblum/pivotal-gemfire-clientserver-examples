@@ -24,7 +24,9 @@
 	</modules>
 
 	<name>Pivotal GemFire Client/Server Parent</name>
-	<description>Example Pivotal GemFire client/server application using both Spring and GemFire's public API for testing purposes.</description>
+	<description>
+		Example Pivotal GemFire client/server applications using both Spring and GemFire's API/cache.xml for testing purposes.
+	</description>
 
 	<organization>
 		<name>Pivotal Software, Inc.</name>
@@ -70,9 +72,9 @@
 	</developers>
 
 	<scm>
-		<url></url>
-		<connection></connection>
-		<developerConnection></developerConnection>
+		<url>https://github.com/jxblum/pivotal-gemfire-clientserver-examples</url>
+		<connection>git@github.com:jxblum/pivotal-gemfire-clientserver-examples.git</connection>
+		<developerConnection>git@github.com:jxblum/pivotal-gemfire-clientserver-examples.git</developerConnection>
 	</scm>
 
 	<properties>

@@ -14,7 +14,7 @@
 	<artifactId>native-gemfire-clientserver-xml</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Native GemFire Client/Server XML Sample Application</name>
+	<name>Native GemFire Client/Server XML Example Application</name>
 	<description>
 		This module demonstrates a Pivotal GemFire client/server application configured with GemFire's native cache.xml.
 	</description>
