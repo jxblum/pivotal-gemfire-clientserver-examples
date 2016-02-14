@@ -52,4 +52,4 @@ For any issues or feedback with this project, please file a [GitHub Issue](https
 I also welcome any contributions through [Pull Requests](https://github.com/jxblum/pivotal-gemfire-clientserver-examples/pulls).
 If you have an idea or improvement, please share.  No CLA necessary.
 
-**Thanks**.
+**Thanks**
