@@ -1,19 +1,19 @@
 ## Native (Pivotal) GemFire Client/Server Example Application
 
-The following example demonstrates how to configure both a *GemFire* client and server cache application using *GemFire's*
-[public Java API](http://data-docs-samples.cfapps.io/docs-gemfire/latest/javadocs/japi/index.html).
+The following example demonstrates how to configure both a *GemFire* client and server cache application using *GemFire*
+[cach.xml](http://gemfire.docs.pivotal.io/docs-gemfire/latest/reference/topics/chapter_overview_cache_xml.html).
 
 This example tests connectivity between the *GemFire* client and server, then runs a test case that tests a custom 
 *GemFire* [CacheLoader](http://data-docs-samples.cfapps.io/docs-gemfire/latest/javadocs/japi/com/gemstone/gemfire/cache/CacheLoader.html) 
-([CubesCacheLoader](https://github.com/jxblum/pivotal-gemfire-clientserver-examples/blob/master/native-gemfire-clientserver/src/main/java/io/pivotal/gemfire/main/GemFireServerApplication.java#L101-L111)) 
-associated with the **Cubes** *Region* computing the cube of a number (specified as the cache "key") when requested, 
-such as...
+([SquareRootsCacheLoader](https://github.com/jxblum/pivotal-gemfire-clientserver-examples/blob/master/native-gemfire-clientserver-xml/src/main/java/io/pivotal/gemfire/main/GemFireServerXmlApplication.java#L83-L95)) 
+associated with the **Square Roots** *Region* computing the square root of a number (specified as the cache "key") 
+when requested, such as...
 
 ```
-Region.get(4) == 64
+Region.get(16) == 4
 ```
 
-Thus, the **Cubes** *Region* will return "64" when the key "4" is requested.  The *CubesCacheLoader* is only invoked
+Thus, the **SquareRoots** *Region* will return "4" when the key "16" is requested.  The *SquareRootsCacheLoader* is only invoked
 if the given key (i.e. number) is not present in the cache already.
 
 ### Prerequisites
@@ -25,14 +25,14 @@ See the [build](https://github.com/jxblum/pivotal-gemfire-clientserver-examples#
 
 ### Running
  
-The example *GemFire Server* ([GemFireServerApplication](https://github.com/jxblum/pivotal-gemfire-clientserver-examples/blob/master/native-gemfire-clientserver/src/main/java/io/pivotal/gemfire/main/GemFireServerApplication.java)) 
-is a native *GemFire* application.  By default, the [module Maven POM file](https://github.com/jxblum/pivotal-gemfire-clientserver-examples/blob/master/native-gemfire-clientserver/pom.xml#L67-L107) 
+The example *GemFire Server* ([GemFireServerXmlApplication](https://github.com/jxblum/pivotal-gemfire-clientserver-examples/blob/master/native-gemfire-clientserver-xml/src/main/java/io/pivotal/gemfire/main/GemFireServerXmlApplication.java)) 
+is a native *GemFire* application.  By default, the [module Maven POM file](https://github.com/jxblum/pivotal-gemfire-clientserver-examples/blob/master/native-gemfire-clientserver-xml/pom.xml#L67-L107) 
 is configured with the *Maven Exec* plugin, which can be used to run the *GemFire Server*.
 
 From the project root directory, you can run the *GemFire Server* on the command-line with the following `mvn` command:
 
 ```
-$ mvn -pl native-gemfire-clientserver exec:java
+$ mvn -pl native-gemfire-clientserver-xml exec:java
 ```
 
 OOTB, this uses the module's default configuration settings (e.g. ports) to configure the *GemFire Server*.
@@ -41,16 +41,16 @@ In addition to starting a *GemFire Server*, the *GemFire* configuration also con
 *GemFire Locator* on port `11235` along with an embedded *GemFire Manager* on port `1199` as well as a *Cache Server* 
 listening for cache clients on port `12480`. 
 
-For convenience, this project module provides a [**connect.gfsh** shell script](https://github.com/jxblum/pivotal-gemfire-clientserver-examples/blob/master/native-gemfire-clientserver/bin/connect.gfsh) 
+For convenience, this project module provides a [**connect.gfsh** shell script](https://github.com/jxblum/pivotal-gemfire-clientserver-examples/blob/master/native-gemfire-clientserver-xml/bin/connect.gfsh) 
 to connect to the running *GemFire Server* in order to inspect the configuration.  **connect.gfsh** connects to
 the running *GemFire Server's* embedded *Locator*, which in turn opens a connection to the embedded *Manager*, then
 proceeds to `list members`, `describe` our member, `list regions`, `describe` our *Region* and then perform a `get`,
-which will invoke the `CubesCacheLoader` on our initially empty cache, resulting in the cube calculation 
+which will invoke the `SquareRootsCacheLoader` on our initially empty cache, resulting in the square root calculation 
 being performed.
                                                                                  
-When `describe member` is executed, you should see that the **Cubes** *Region* exists on our server along with 
+When `describe member` is executed, you should see that the **SquareRoots** *Region* exists on our server along with 
 the network service endpoint of the *GemFire* `CacheServer` listening on port `12480`.  When `describe region` is 
-executed, you should see the registered `CubesCacheLoader`.
+executed, you should see the registered `SquareRootsCacheLoader`.
 
 The *Gfsh* shell script can be ran interactively (inside the *GemFire Shell*) or non-interactively 
 (e.g. scripted in `Bash`).
@@ -62,7 +62,7 @@ in place of *Pivotal GemFire*.  Be sure to follow the [installation instructions
 Invoke the *Gfsh* shell script with the `run` command inside the *GemFire Shell*:
 
 ```
-gfsh>run --file=/absolute/path/to/pivotal-gemfire-clientserver-examples/native-gemfire-clientserver/bin/connect.gfsh
+gfsh>run --file=/absolute/path/to/pivotal-gemfire-clientserver-examples/native-gemfire-clientserver-xml/bin/connect.gfsh
 ```
 
 Or non-interactively, in a (Bash) shell script like so:
@@ -71,7 +71,7 @@ Or non-interactively, in a (Bash) shell script like so:
 !/bin/bash
 ...
 
-gfsh -e "run --file=/absolute/path/to/pivotal-gemfire-clientserver-examples/native-gemfire-clientserver/bin/connect.gfsh"
+gfsh -e "run --file=/absolute/path/to/pivotal-gemfire-clientserver-examples/native-gemfire-clientserver-xml/bin/connect.gfsh"
 ```
 
 If you are running the *GemFire Server* remotely, you will need to tweak the *connect.gfsh* shell script appropriately.
@@ -83,17 +83,17 @@ If you are running the *GemFire Server* remotely, you will need to tweak the *co
 Once the *GemFire Server* is configured and running, you can run the test with the following:
 
 ```
-$ mvn -pl native-gemfire-clientserver test
+$ mvn -pl native-gemfire-clientserver-xml test
 ```
 
 *(optional)* Once the test runs and completes successfully, you can return to *Gfsh* and execute the `describe region` 
 command to see that the contents of the cache were updated successfully by the test during execution.
 
 ```
-gfsh>describe region --name=Cubes
+gfsh>describe region --name=SquareRoots
 ```
 
-*(optional)* You can also just make additional requests right from *Gfsh* to the *GemFire Server* cache **Cubes** *Region* 
+*(optional)* You can also just make additional requests right from *Gfsh* to the *GemFire Server* cache **SquareRoots** *Region* 
 in order to perform additional computations.
 
 ### Running Remotely
@@ -117,12 +117,12 @@ gemfire.cache.server.host | client | localhost | Configures the host that client
 To run the *GemFire Server* listening on a different port configured with a log level of `warning`, use the following:
 
 ```
-$ mvn -pl native-gemfire-clientserver exec:java -Dspring.gemfire.cache.server.port=43210 -Dspring.gemfire.log.level=warning
+$ mvn -pl native-gemfire-clientserver-xml exec:java -Dspring.gemfire.cache.server.port=43210 -Dspring.gemfire.log.level=warning
 ```
 
 Likewise, you need to make sure to change the port that the *GemFire* cache client tries to connect to the server on 
 when running the test.  Additionally, in the remote case, you will need to specify the server's IP address:
 
 ```
-$ mvn -pl native-gemfire-clientserver test -Dspring.gemfire.cache.server.port=43210 -Dspring.gemfire.cache.server.host=10.101.21.1
+$ mvn -pl native-gemfire-clientserver-xml test -Dspring.gemfire.cache.server.port=43210 -Dspring.gemfire.cache.server.host=10.101.21.1
 ```

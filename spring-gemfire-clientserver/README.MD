@@ -111,10 +111,10 @@ spring.gemfire.locator.host-port | server | localhost[11235] | Configures an emb
 spring.gemfire.manager.port | server | 1199 | Configures the port on which the embedded GemFire Manager listens for JMX clients (e.g. Gfsh).
 spring.gemfire.cache.server.bind-address | server | localhost | Configures the IP address of the NIC on which the GemFire Cache Server will bind the ServerSocket.
 spring.gemfire.cache.server.hostname-for-clients | server | localhost | Configures the DNS hostname that client will use to resolve the GemFire Cache Server.
-spring.gemfire.cache.server.port | both | 12480 | Configures the port on which the embedded GemFire Cache Server listens for Gemfire cache clients. Also the port that client uses to connect to the GemFire Cache Server.
+spring.gemfire.cache.server.port | both | 12480 | Configures the port on which the embedded GemFire Cache Server listens for Gemfire cache clients. Also the port the client uses to connect to the GemFire Cache Server.
 spring.gemfire.cache.server.host | client | localhost | Configures the host that client uses to connect to the GemFire Cache Server. 
 
-To run the *GemFire Server* listening on a different port configured with a log level of "warning", use the following:
+To run the *GemFire Server* listening on a different port configured with a log level of `warning`, use the following:
 
 ```
 $ mvn -pl spring-gemfire-clientserver spring-boot:run -Dspring.gemfire.cache.server.port=43210 -Dspring.gemfire.log.level=warning
