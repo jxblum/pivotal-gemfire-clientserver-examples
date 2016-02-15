@@ -117,12 +117,12 @@ gemfire.cache.server.host | client | localhost | Configures the host that client
 To run the *GemFire Server* listening on a different port configured with a log level of `warning`, use the following:
 
 ```
-$ mvn -pl native-gemfire-clientserver-xml exec:java -Dspring.gemfire.cache.server.port=43210 -Dspring.gemfire.log.level=warning
+$ mvn -pl native-gemfire-clientserver-xml exec:java -Dgemfire.cache.server.port=43210 -Dspring.gemfire.log.level=warning
 ```
 
 Likewise, you need to make sure to change the port that the *GemFire* cache client tries to connect to the server on 
 when running the test.  Additionally, in the remote case, you will need to specify the server's IP address:
 
 ```
-$ mvn -pl native-gemfire-clientserver-xml test -Dspring.gemfire.cache.server.port=43210 -Dspring.gemfire.cache.server.host=10.101.21.1
+$ mvn -pl native-gemfire-clientserver-xml test -Dgemfire.cache.server.port=43210 -Dspring.gemfire.cache.server.host=10.101.21.1
 ```

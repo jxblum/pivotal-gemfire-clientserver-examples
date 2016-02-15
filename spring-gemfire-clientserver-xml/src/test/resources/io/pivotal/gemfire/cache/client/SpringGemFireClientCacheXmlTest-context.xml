@@ -14,7 +14,7 @@
 	<context:property-placeholder/>
 
 	<util:properties id="gemfireProperties">
-		<prop key="log-level">${spring.gemfire.log.level:config}</prop>
+		<prop key="log-level">${gemfire.log.level:config}</prop>
 	</util:properties>
 
 	<gfe:pool id="serverPool" free-connection-timeout="5000" keep-alive="false"
@@ -22,9 +22,9 @@
 			  ping-interval="5000" read-timeout="2000" retry-attempts="1" subscription-enabled="true"
 			  thread-local-connections="false">
 <!--
-		<gfe:locator host="${spring.gemfire.locator.host:localhost}" port="${spring.gemfire.locator.port:11235}"/>
+		<gfe:locator host="${gemfire.locator.host:localhost}" port="${gemfire.locator.port:11235}"/>
 -->
-		<gfe:server host="${spring.gemfire.cache.server.host:localhost}" port="${spring.gemfire.cache.server.port:12480}"/>
+		<gfe:server host="${gemfire.cache.server.host:localhost}" port="${gemfire.cache.server.port:12480}"/>
 	</gfe:pool>
 
 	<gfe:client-cache properties-ref="gemfireProperties" pool-name="serverPool"/>

@@ -98,7 +98,7 @@ public class SpringGemFireClientCacheTest {
 		}
 
 		@Bean
-		Properties gemfireProperties(@Value("${spring.gemfire.log.level:config}") String logLevel) {
+		Properties gemfireProperties(@Value("${gemfire.log.level:config}") String logLevel) {
 			Properties gemfireProperties = new Properties();
 
 			gemfireProperties.setProperty("log-level", logLevel);
@@ -107,8 +107,8 @@ public class SpringGemFireClientCacheTest {
 		}
 
 		@Bean(name = GemfireConstants.DEFAULT_GEMFIRE_POOL_NAME)
-		PoolFactoryBean gemfirePool(@Value("${spring.gemfire.cache.server.host:localhost}") String host,
-			@Value("${spring.gemfire.cache.server.port:12480}") int port)
+		PoolFactoryBean gemfirePool(@Value("${gemfire.cache.server.host:localhost}") String host,
+			@Value("${gemfire.cache.server.port:12480}") int port)
 		{
 			PoolFactoryBean gemfirePool = new PoolFactoryBean();
 

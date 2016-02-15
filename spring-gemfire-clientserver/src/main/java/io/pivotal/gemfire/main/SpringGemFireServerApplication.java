@@ -55,9 +55,9 @@ public class SpringGemFireServerApplication {
 	}
 
 	@Bean
-	Properties gemfireProperties(@Value("${spring.gemfire.log.level:config}") String logLevel,
-		@Value("${spring.gemfire.locator.host-port:localhost[11235]}") String locatorHostPort,
-		@Value("${spring.gemfire.manager.port:1199}") String managerPort)
+	Properties gemfireProperties(@Value("${gemfire.log.level:config}") String logLevel,
+		@Value("${gemfire.locator.host-port:localhost[11235]}") String locatorHostPort,
+		@Value("${gemfire.manager.port:1199}") String managerPort)
 	{
 		Properties gemfireProperties = new Properties();
 
@@ -87,9 +87,9 @@ public class SpringGemFireServerApplication {
 
 	@Bean
 	CacheServerFactoryBean gemfireCacheServer(Cache gemfireCache,
-		@Value("${spring.gemfire.cache.server.bind-address:localhost}") String bindAddress,
-		@Value("${spring.gemfire.cache.server.hostname-for-clients:localhost}") String hostNameForClients,
-		@Value("${spring.gemfire.cache.server.port:12480}") int port)
+		@Value("${gemfire.cache.server.bind-address:localhost}") String bindAddress,
+		@Value("${gemfire.cache.server.hostname-for-clients:localhost}") String hostNameForClients,
+		@Value("${gemfire.cache.server.port:12480}") int port)
 	{
 		CacheServerFactoryBean gemfireCacheServer = new CacheServerFactoryBean();
 
