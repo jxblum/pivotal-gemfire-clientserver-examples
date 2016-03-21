@@ -3,3 +3,8 @@ target/
 *.iml
 *.ipr
 *.iws
+
+# Eclipse IDE
+.project
+*.prefs
+*/.classpath
