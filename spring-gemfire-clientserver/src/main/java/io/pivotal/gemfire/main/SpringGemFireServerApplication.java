@@ -18,22 +18,22 @@ package io.pivotal.gemfire.main;
 
 import java.util.Properties;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.gemfire.CacheFactoryBean;
-import org.springframework.data.gemfire.PartitionedRegionFactoryBean;
-import org.springframework.data.gemfire.RegionAttributesFactoryBean;
-import org.springframework.data.gemfire.server.CacheServerFactoryBean;
-
 import com.gemstone.gemfire.cache.Cache;
 import com.gemstone.gemfire.cache.CacheLoader;
 import com.gemstone.gemfire.cache.CacheLoaderException;
 import com.gemstone.gemfire.cache.LoaderHelper;
 import com.gemstone.gemfire.cache.RegionAttributes;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.gemfire.CacheFactoryBean;
+import org.springframework.data.gemfire.PartitionedRegionFactoryBean;
+import org.springframework.data.gemfire.RegionAttributesFactoryBean;
+import org.springframework.data.gemfire.server.CacheServerFactoryBean;
 
 /**
  * The SpringGemFireServerApplication class...
@@ -41,7 +41,6 @@ import com.gemstone.gemfire.cache.RegionAttributes;
  * @author John Blum
  * @since 1.0.0
  */
-@ConfigurationProperties
 @SpringBootApplication
 @SuppressWarnings("unused")
 public class SpringGemFireServerApplication {
@@ -55,13 +54,22 @@ public class SpringGemFireServerApplication {
 	}
 
 	@Bean
+	PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
+		return new PropertyPlaceholderConfigurer();
+	}
+
+	String applicationName() {
+		return SpringGemFireServerApplication.class.getSimpleName();
+	}
+
+	@Bean
 	Properties gemfireProperties(@Value("${gemfire.log.level:config}") String logLevel,
 		@Value("${gemfire.locator.host-port:localhost[11235]}") String locatorHostPort,
 		@Value("${gemfire.manager.port:1199}") String managerPort)
 	{
 		Properties gemfireProperties = new Properties();
 
-		gemfireProperties.setProperty("name", SpringGemFireServerApplication.class.getSimpleName());
+		gemfireProperties.setProperty("name", applicationName());
 		gemfireProperties.setProperty("mcast-port", "0");
 		gemfireProperties.setProperty("log-level", logLevel);
 		gemfireProperties.setProperty("locators", locatorHostPort);
@@ -78,19 +86,17 @@ public class SpringGemFireServerApplication {
 		CacheFactoryBean gemfireCache = new CacheFactoryBean();
 
 		gemfireCache.setClose(true);
-		gemfireCache.setLazyInitialize(true);
 		gemfireCache.setProperties(gemfireProperties);
-		gemfireCache.setUseBeanFactoryLocator(false);
 
 		return gemfireCache;
 	}
 
 	@Bean
 	CacheServerFactoryBean gemfireCacheServer(Cache gemfireCache,
-		@Value("${gemfire.cache.server.bind-address:localhost}") String bindAddress,
-		@Value("${gemfire.cache.server.hostname-for-clients:localhost}") String hostNameForClients,
-		@Value("${gemfire.cache.server.port:12480}") int port)
-	{
+			@Value("${gemfire.cache.server.bind-address:localhost}") String bindAddress,
+			@Value("${gemfire.cache.server.hostname-for-clients:localhost}") String hostNameForClients,
+			@Value("${gemfire.cache.server.port:12480}") int port) {
+
 		CacheServerFactoryBean gemfireCacheServer = new CacheServerFactoryBean();
 
 		gemfireCacheServer.setCache(gemfireCache);
@@ -105,10 +111,11 @@ public class SpringGemFireServerApplication {
 
 	@Bean
 	PartitionedRegionFactoryBean<Long, Long> factorialsRegion(Cache gemfireCache,
-		@Qualifier("factorialsRegionAttributes") RegionAttributes<Long, Long> factorialsRegionAttributes)
-	{
+			@Qualifier("factorialsRegionAttributes") RegionAttributes<Long, Long> factorialsRegionAttributes) {
+
 		PartitionedRegionFactoryBean<Long, Long> factorialsRegion = new PartitionedRegionFactoryBean<>();
 
+		factorialsRegion.setAttributes(factorialsRegionAttributes);
 		factorialsRegion.setCache(gemfireCache);
 		factorialsRegion.setClose(false);
 		factorialsRegion.setAttributes(factorialsRegionAttributes);
@@ -143,13 +150,13 @@ public class SpringGemFireServerApplication {
 
 			assert number >= 0 : String.format("number [%1$d] must be greater than equal to 0", number);
 
-			if (number < 3) {
-				return (number < 2 ? 1l : 2l);
+			if (number <= 2L) {
+				return (number < 2L ? 1L : 2L);
 			}
 
 			long result = number;
 
-			while (number-- > 1) {
+			while (number-- > 1L) {
 				result *= number;
 			}
 
@@ -159,5 +166,4 @@ public class SpringGemFireServerApplication {
 		public void close() {
 		}
 	}
-
 }

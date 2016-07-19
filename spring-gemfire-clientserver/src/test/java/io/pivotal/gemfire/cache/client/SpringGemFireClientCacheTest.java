@@ -21,11 +21,17 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+
 import javax.annotation.Resource;
+
+import com.gemstone.gemfire.cache.DataPolicy;
+import com.gemstone.gemfire.cache.Region;
+import com.gemstone.gemfire.cache.client.ClientCache;
+import com.gemstone.gemfire.cache.client.ClientRegionShortcut;
+import com.gemstone.gemfire.cache.client.Pool;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,14 +45,9 @@ import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.client.PoolFactoryBean;
 import org.springframework.data.gemfire.config.GemfireConstants;
+import org.springframework.data.gemfire.support.ConnectionEndpoint;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.client.ClientCache;
-import com.gemstone.gemfire.cache.client.ClientRegionShortcut;
-import com.gemstone.gemfire.cache.client.Pool;
 
 import io.pivotal.gemfire.main.SpringGemFireServerApplication;
 
@@ -92,6 +93,10 @@ public class SpringGemFireClientCacheTest {
 	@Configuration
 	public static class SpringGemFireClientConfiguration {
 
+		int intValue(Long value) {
+			return value.intValue();
+		}
+
 		@Bean
 		PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
 			return new PropertySourcesPlaceholderConfigurer();
@@ -113,32 +118,27 @@ public class SpringGemFireClientCacheTest {
 			PoolFactoryBean gemfirePool = new PoolFactoryBean();
 
 			gemfirePool.setName(GemfireConstants.DEFAULT_GEMFIRE_POOL_NAME);
-			gemfirePool.setFreeConnectionTimeout(5000); // 5 seconds
+			gemfirePool.setFreeConnectionTimeout(intValue(TimeUnit.SECONDS.toMillis(5)));
 			gemfirePool.setKeepAlive(false);
 			gemfirePool.setMaxConnections(SpringGemFireServerApplication.DEFAULT_MAX_CONNECTIONS);
 			gemfirePool.setMinConnections(1);
 			gemfirePool.setPingInterval(TimeUnit.SECONDS.toMillis(5));
-			gemfirePool.setReadTimeout(2000); // 2 seconds
+			gemfirePool.setReadTimeout(intValue(TimeUnit.SECONDS.toMillis(2))); // 2 seconds
 			gemfirePool.setRetryAttempts(1);
 			gemfirePool.setSubscriptionEnabled(true);
 			gemfirePool.setThreadLocalConnections(false);
 
-			gemfirePool.setServers(Collections.singletonList(new InetSocketAddress(host, port)));
+			gemfirePool.setServers(Collections.singletonList(new ConnectionEndpoint(host, port)));
 
 			return gemfirePool;
 		}
 
 		@Bean
-		ClientCacheFactoryBean gemfireCache(@Qualifier("gemfireProperties") Properties gemfireProperties,
-			Pool gemfirePool)
-		{
+		ClientCacheFactoryBean gemfireCache(@Qualifier("gemfireProperties") Properties gemfireProperties) {
 			ClientCacheFactoryBean gemfireCache = new ClientCacheFactoryBean();
 
 			gemfireCache.setClose(true);
-			gemfireCache.setLazyInitialize(false);
 			gemfireCache.setProperties(gemfireProperties);
-			gemfireCache.setPool(gemfirePool);
-			gemfireCache.setUseBeanFactoryLocator(false);
 
 			return gemfireCache;
 		}
@@ -155,5 +155,4 @@ public class SpringGemFireClientCacheTest {
 			return factorialsRegion;
 		}
 	}
-
 }
