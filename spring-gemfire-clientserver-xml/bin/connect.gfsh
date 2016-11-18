@@ -1,4 +1,4 @@
-connect --locator=localhost[11235]
+connect
 list members
 describe member --name=SpringGemFireServerApplication
 list regions
