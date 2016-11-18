@@ -17,7 +17,7 @@ Example Application | Description
 [spring-gemfire-clientserver-xml](https://github.com/jxblum/pivotal-gemfire-clientserver-examples/tree/master/spring-gemfire-clientserver-xml) | Configures GemFire client/server using the Spring (Data GemFire) XML namespace; Tests client/server connectivity and square root (x^1/2) operations.
 [spring-gemfire-clientserver](https://github.com/jxblum/pivotal-gemfire-clientserver-examples/tree/master/spring-gemfire-clientserver) | Configures GemFire client/server using Spring Java-based Container Configuration; Tests client/server connectivity and squared (x^2) operations.
 
-Drill into the individual modules for further details on how to build and run each example application. 
+Drill into the individual modules for further details on how to build and run each example application.
 
 ### Requirements
 
@@ -26,10 +26,9 @@ Drill into the individual modules for further details on how to build and run ea
 
 ### Dependencies
 
-Currently, the project is using *Spring Data GemFire* **1.6.2.RELEASE** and *Pivotal GemFire* **8.1.0** in order to
-resolve a customer issue.
+Currently, the project is using *Spring Data GemFire* **1.8.5.RELEASE** and *Pivotal GemFire* **8.2.0**.
 
-You can download distributions of the *JDK* [here](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 
+You can download distributions of the *JDK* [here](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 and *Apache Maven* at [maven.apache.org](http://maven.apache.org/download.cgi).
 
 ### Build
@@ -40,12 +39,12 @@ To build this *pivotal-gemfire-clientserver-examples* project, run the following
 $ mvn clean install -DskipTests
 ```
 
-You must skip tests when running the build since the project tests are technically **integration** tests.  This means 
-they require a GemFire (Cache) Server to be running in order to execute successfully.  
+You must skip tests when running the build since the project tests are technically **integration** tests.  This means
+they require a GemFire (Cache) Server to be running in order to execute successfully.
 
 ### Issues
 
-For any issues or feedback with this project, please file a [GitHub Issue](https://github.com/jxblum/pivotal-gemfire-clientserver-examples/issues).  
+For any issues or feedback with this project, please file a [GitHub Issue](https://github.com/jxblum/pivotal-gemfire-clientserver-examples/issues).
 
 ### Contributions
 
