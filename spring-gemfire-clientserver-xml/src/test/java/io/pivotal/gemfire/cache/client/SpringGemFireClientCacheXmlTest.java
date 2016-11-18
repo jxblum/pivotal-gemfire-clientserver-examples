@@ -26,11 +26,12 @@ import javax.annotation.Resource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gemstone.gemfire.cache.DataPolicy;
 import com.gemstone.gemfire.cache.Region;
+
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * The SpringGemFireClientCacheXmlTest class...
@@ -58,17 +59,16 @@ public class SpringGemFireClientCacheXmlTest {
 
 	@Test
 	public void computeSquares() {
-		assertThat(squares.get(0l), is(equalTo(0l)));
-		assertThat(squares.get(1l), is(equalTo(1l)));
-		assertThat(squares.get(2l), is(equalTo(4l)));
-		assertThat(squares.get(3l), is(equalTo(9l)));
-		assertThat(squares.get(4l), is(equalTo(16l)));
-		assertThat(squares.get(5l), is(equalTo(25l)));
-		assertThat(squares.get(6l), is(equalTo(36l)));
-		assertThat(squares.get(7l), is(equalTo(49l)));
-		assertThat(squares.get(8l), is(equalTo(64l)));
-		assertThat(squares.get(9l), is(equalTo(81l)));
-		assertThat(squares.get(10l), is(equalTo(100l)));
+		assertThat(squares.get(0L), is(equalTo(0L)));
+		assertThat(squares.get(1L), is(equalTo(1L)));
+		assertThat(squares.get(2L), is(equalTo(4L)));
+		assertThat(squares.get(3L), is(equalTo(9L)));
+		assertThat(squares.get(4L), is(equalTo(16L)));
+		assertThat(squares.get(5L), is(equalTo(25L)));
+		assertThat(squares.get(6L), is(equalTo(36L)));
+		assertThat(squares.get(7L), is(equalTo(49L)));
+		assertThat(squares.get(8L), is(equalTo(64L)));
+		assertThat(squares.get(9L), is(equalTo(81L)));
+		assertThat(squares.get(10L), is(equalTo(100L)));
 	}
-
 }

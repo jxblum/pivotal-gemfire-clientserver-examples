@@ -17,8 +17,7 @@
 		<prop key="name">SpringGemFireServerXmlApplication</prop>
 		<prop key="mcast-port">0</prop>
 		<prop key="log-level">${gemfire.log.level:config}</prop>
-		<prop key="locators">${gemfire.locator.host-port:localhost[11235]}</prop>
-		<prop key="start-locator">${gemfire.locator.host-port:localhost[11235]}</prop>
+		<prop key="start-locator">${gemfire.locator.host-port:localhost[10334]}</prop>
 		<prop key="jmx-manager">true</prop>
 		<prop key="jmx-manager-port">${gemfire.manager.port:1199}</prop>
 		<prop key="jmx-manager-start">true</prop>
@@ -29,14 +28,13 @@
 	<gfe:cache-server id="gemfireCacheServer" auto-startup="true"
 					  bind-address="${gemfire.cache.server.bind-address:localhost}"
 					  host-name-for-clients="${gemfire.cache.server.hostname-for-clients:localhost}"
-					  port="${gemfire.cache.server.port:12480}"
-					  max-connections="#{T(io.pivotal.gemfire.main.SpringGemFireServerXmlApplication).DEFAULT_MAX_CONNECTIONS}"/>
+					  port="${gemfire.cache.server.port:40404}"/>
 
 	<gfe:partitioned-region id="Squares" persistent="false" key-constraint="java.lang.Long"
-							value-constraint="java.lang.Long">
-		<gfe:cache-loader ref="squaresCacheLoader"/>
+													value-constraint="java.lang.Long">
+		<gfe:cache-loader>
+			<bean class="io.pivotal.gemfire.main.SpringGemFireServerXmlApplication.SquaresCacheLoader"/>
+		</gfe:cache-loader>
 	</gfe:partitioned-region>
-
-	<bean id="squaresCacheLoader" class="io.pivotal.gemfire.main.SpringGemFireServerXmlApplication.SquaresCacheLoader"/>
 
 </beans>

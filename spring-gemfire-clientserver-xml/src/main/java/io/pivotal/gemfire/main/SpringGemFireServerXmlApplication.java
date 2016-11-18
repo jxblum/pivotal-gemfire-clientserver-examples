@@ -16,13 +16,13 @@
 
 package io.pivotal.gemfire.main;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ImportResource;
-
 import com.gemstone.gemfire.cache.CacheLoader;
 import com.gemstone.gemfire.cache.CacheLoaderException;
 import com.gemstone.gemfire.cache.LoaderHelper;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ImportResource;
 
 /**
  * The SpringGemFireServerXmlApplication class...
@@ -34,8 +34,6 @@ import com.gemstone.gemfire.cache.LoaderHelper;
 @ImportResource("io/pivotal/gemfire/main/spring-gemfire-cache-server-context.xml")
 @SuppressWarnings("unused")
 public class SpringGemFireServerXmlApplication {
-
-	public static final int DEFAULT_MAX_CONNECTIONS = 100;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringGemFireServerXmlApplication.class, args);
@@ -53,5 +51,4 @@ public class SpringGemFireServerXmlApplication {
 		public void close() {
 		}
 	}
-
 }

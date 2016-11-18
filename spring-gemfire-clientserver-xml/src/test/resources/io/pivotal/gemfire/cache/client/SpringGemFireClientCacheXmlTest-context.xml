@@ -17,17 +17,16 @@
 		<prop key="log-level">${gemfire.log.level:config}</prop>
 	</util:properties>
 
+	<gfe:client-cache properties-ref="gemfireProperties" pool-name="serverPool"/>
+
 	<gfe:pool id="serverPool" free-connection-timeout="5000" keep-alive="false"
-			  max-connections="#{T(io.pivotal.gemfire.main.SpringGemFireServerXmlApplication).DEFAULT_MAX_CONNECTIONS}"
 			  ping-interval="5000" read-timeout="2000" retry-attempts="1" subscription-enabled="true"
 			  thread-local-connections="false">
 <!--
-		<gfe:locator host="${gemfire.locator.host:localhost}" port="${gemfire.locator.port:11235}"/>
+		<gfe:locator host="${gemfire.locator.host:localhost}" port="${gemfire.locator.port:10334}"/>
 -->
-		<gfe:server host="${gemfire.cache.server.host:localhost}" port="${gemfire.cache.server.port:12480}"/>
+		<gfe:server host="${gemfire.cache.server.host:localhost}" port="${gemfire.cache.server.port:40404}"/>
 	</gfe:pool>
-
-	<gfe:client-cache properties-ref="gemfireProperties" pool-name="serverPool"/>
 
 	<gfe:client-region id="Squares" pool-name="serverPool" shortcut="PROXY"
 					   key-constraint="java.lang.Long" value-constraint="java.lang.Long"/>
