@@ -49,7 +49,7 @@ which will invoke the `FactorialsCacheLoader` on our initially empty cache, resu
 being performed.
 
 When `describe member` is executed, you should see that the **Factorials** *Region* exists on our server along with
-the network service endpoint of the *GemFire* `CacheServer` listening on port `12480`.  When `describe region` is
+the network service endpoint of the *GemFire* `CacheServer` listening on port `40404`.  When `describe region` is
 executed, you should see the registered `FactorialsCacheLoader`.
 
 The *Gfsh* shell script can be ran interactively (inside the *GemFire Shell*) or non-interactively
@@ -107,11 +107,11 @@ the client (test) or the server:
 System Property | Client/Server | Default | Description
 --------------- | ------------- | ------- | -----------
 gemfire.log.level | both | config | Configures the GemFire log level.
-gemfire.locator.host-port | server | localhost[11235] | Configures an embedded GemFire Locator that will run on startup.
-gemfire.manager.port | server | 1199 | Configures the port on which the embedded GemFire Manager listens for JMX clients (e.g. Gfsh).
+gemfire.locator.host-port | server | localhost[10334] | Configures an embedded GemFire Locator that will run on startup.
+gemfire.manager.port | server | 1099 | Configures the port on which the embedded GemFire Manager listens for JMX clients (e.g. Gfsh).
 gemfire.cache.server.bind-address | server | localhost | Configures the IP address of the NIC on which the GemFire Cache Server will bind the ServerSocket.
 gemfire.cache.server.hostname-for-clients | server | localhost | Configures the DNS hostname that client will use to resolve the GemFire Cache Server.
-gemfire.cache.server.port | both | 12480 | Configures the port on which the embedded GemFire Cache Server listens for Gemfire cache clients. Also the port the client uses to connect to the GemFire Cache Server.
+gemfire.cache.server.port | both | 40404 | Configures the port on which the embedded GemFire Cache Server listens for Gemfire cache clients. Also the port the client uses to connect to the GemFire Cache Server.
 gemfire.cache.server.host | client | localhost | Configures the host that client uses to connect to the GemFire Cache Server.
 
 To run the *GemFire Server* listening on a different port configured with a log level of `warning`, use the following:
