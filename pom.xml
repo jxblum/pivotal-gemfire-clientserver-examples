@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.4.0.RC1</version>
+		<version>1.4.2.RELEASE</version>
 	</parent>
 
 	<groupId>io.pivotal</groupId>
@@ -28,11 +28,6 @@
 		Example Pivotal GemFire client/server applications using both Spring and GemFire's native API/cache.xml
 		for testing purposes.
 	</description>
-
-	<organization>
-		<name>Pivotal Software, Inc.</name>
-		<url>http://www.pivotal.io</url>
-	</organization>
 
 	<licenses>
 		<license>
@@ -57,6 +52,11 @@
 		</license>
 	</licenses>
 
+	<organization>
+		<name>Pivotal Software, Inc.</name>
+		<url>http://www.pivotal.io</url>
+	</organization>
+
 	<developers>
 		<developer>
 			<id>jblum</id>
@@ -66,7 +66,9 @@
 			<organizationUrl>http://www.spring.io</organizationUrl>
 			<roles>
 				<role>Spring Data Team</role>
+				<role>Spring Data Cassandra Lead/Committer</role>
 				<role>Spring Data GemFire Lead/Committer</role>
+				<role>Spring Data Geode Lead/Committer</role>
 				<role>Apache Geode Committer</role>
 			</roles>
 		</developer>
@@ -79,12 +81,12 @@
 	</scm>
 
 	<properties>
-		<jackson.version>2.6.0</jackson.version>
+		<jackson.version>2.8.4</jackson.version>
 		<java.version>1.8</java.version>
 		<multithreadedtc.version>1.01</multithreadedtc.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-boot.version>1.4.0.RC1</spring-boot.version>
-		<spring-data-gemfire.version>1.8.2.RELEASE</spring-data-gemfire.version>
+		<spring-boot.version>1.4.2.RELEASE</spring-boot.version>
+		<spring-data-gemfire.version>1.8.5.RELEASE</spring-data-gemfire.version>
 		<spring-shell.version>1.0.0.RELEASE</spring-shell.version>
 	</properties>
 
@@ -107,6 +109,11 @@
 			<id>spring-libs-milestone</id>
 			<name>Spring libs-milestone Maven Repository</name>
 			<url>https://repo.spring.io/libs-milestone</url>
+		</repository>
+		<repository>
+			<id>spring-libs-snapshot</id>
+			<name>Spring libs-snapshot Maven Repository</name>
+			<url>https://repo.spring.io/libs-snapshot</url>
 		</repository>
 	</repositories>
 
