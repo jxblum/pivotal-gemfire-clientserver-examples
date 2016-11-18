@@ -21,17 +21,17 @@
 	</description>
 	<url>https://github.com/spring-projects/spring-boot/tree/master/spring-boot-starters#starter-poms</url>
 
-	<organization>
-		<name>Pivotal Software, Inc.</name>
-		<url>http://www.pivotal.io</url>
-	</organization>
-
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
 		</license>
 	</licenses>
+
+	<organization>
+		<name>Pivotal Software, Inc.</name>
+		<url>http://www.pivotal.io</url>
+	</organization>
 
 	<developers>
 		<developer>
@@ -42,7 +42,9 @@
 			<organizationUrl>http://www.spring.io</organizationUrl>
 			<roles>
 				<role>Spring Data Team</role>
+				<role>Spring Data Cassandra Lead/Committer</role>
 				<role>Spring Data GemFire Lead/Committer</role>
+				<role>Spring Data Geode Lead/Committer</role>
 				<role>Apache Geode Committer</role>
 			</roles>
 		</developer>

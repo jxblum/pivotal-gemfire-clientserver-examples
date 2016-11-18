@@ -47,14 +47,12 @@ public class SpringGemFireServerApplication {
 
 	static final boolean DEFAULT_AUTO_STARTUP = true;
 
-	public static final int DEFAULT_MAX_CONNECTIONS = 100;
-
-	public static void main(final String[] args) {
+	public static void main(String[] args) {
 		SpringApplication.run(SpringGemFireServerApplication.class, args);
 	}
 
 	@Bean
-	PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
+	static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
 		return new PropertyPlaceholderConfigurer();
 	}
 
@@ -63,16 +61,16 @@ public class SpringGemFireServerApplication {
 	}
 
 	@Bean
-	Properties gemfireProperties(@Value("${gemfire.log.level:config}") String logLevel,
-		@Value("${gemfire.locator.host-port:localhost[11235]}") String locatorHostPort,
-		@Value("${gemfire.manager.port:1199}") String managerPort)
-	{
+	Properties gemfireProperties(
+		  @Value("${gemfire.log.level:config}") String logLevel,
+		  @Value("${gemfire.locator.host-port:localhost[10334]}") String locatorHostPort,
+		  @Value("${gemfire.manager.port:1099}") String managerPort) {
+
 		Properties gemfireProperties = new Properties();
 
 		gemfireProperties.setProperty("name", applicationName());
 		gemfireProperties.setProperty("mcast-port", "0");
 		gemfireProperties.setProperty("log-level", logLevel);
-		gemfireProperties.setProperty("locators", locatorHostPort);
 		gemfireProperties.setProperty("start-locator", locatorHostPort);
 		gemfireProperties.setProperty("jmx-manager", "true");
 		gemfireProperties.setProperty("jmx-manager-port", managerPort);
@@ -95,7 +93,7 @@ public class SpringGemFireServerApplication {
 	CacheServerFactoryBean gemfireCacheServer(Cache gemfireCache,
 			@Value("${gemfire.cache.server.bind-address:localhost}") String bindAddress,
 			@Value("${gemfire.cache.server.hostname-for-clients:localhost}") String hostNameForClients,
-			@Value("${gemfire.cache.server.port:12480}") int port) {
+			@Value("${gemfire.cache.server.port:40404}") int port) {
 
 		CacheServerFactoryBean gemfireCacheServer = new CacheServerFactoryBean();
 
@@ -104,7 +102,6 @@ public class SpringGemFireServerApplication {
 		gemfireCacheServer.setBindAddress(bindAddress);
 		gemfireCacheServer.setHostNameForClients(hostNameForClients);
 		gemfireCacheServer.setPort(port);
-		gemfireCacheServer.setMaxConnections(DEFAULT_MAX_CONNECTIONS);
 
 		return gemfireCacheServer;
 	}
@@ -118,7 +115,6 @@ public class SpringGemFireServerApplication {
 		factorialsRegion.setAttributes(factorialsRegionAttributes);
 		factorialsRegion.setCache(gemfireCache);
 		factorialsRegion.setClose(false);
-		factorialsRegion.setAttributes(factorialsRegionAttributes);
 		factorialsRegion.setName("Factorials");
 		factorialsRegion.setPersistent(false);
 
@@ -137,7 +133,6 @@ public class SpringGemFireServerApplication {
 		return factorialsRegionAttributes;
 	}
 
-	@Bean
 	FactorialsCacheLoader factorialsCacheLoader() {
 		return new FactorialsCacheLoader();
 	}
@@ -145,10 +140,11 @@ public class SpringGemFireServerApplication {
 	class FactorialsCacheLoader implements CacheLoader<Long, Long> {
 
 		// stupid, naive implementation of Factorial!
+    @Override
 		public Long load(LoaderHelper<Long, Long> loaderHelper) throws CacheLoaderException {
 			long number = loaderHelper.getKey();
 
-			assert number >= 0 : String.format("number [%1$d] must be greater than equal to 0", number);
+			assert number >= 0 : String.format("Number [%1$d] must be greater than equal to 0", number);
 
 			if (number <= 2L) {
 				return (number < 2L ? 1L : 2L);
@@ -163,6 +159,7 @@ public class SpringGemFireServerApplication {
 			return result;
 		}
 
+		@Override
 		public void close() {
 		}
 	}

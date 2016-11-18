@@ -27,15 +27,16 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import com.gemstone.gemfire.cache.DataPolicy;
 import com.gemstone.gemfire.cache.Region;
 import com.gemstone.gemfire.cache.client.ClientCache;
 import com.gemstone.gemfire.cache.client.ClientRegionShortcut;
 import com.gemstone.gemfire.cache.client.Pool;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -48,8 +49,6 @@ import org.springframework.data.gemfire.config.GemfireConstants;
 import org.springframework.data.gemfire.support.ConnectionEndpoint;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import io.pivotal.gemfire.main.SpringGemFireServerApplication;
 
 /**
  * The SpringGemFireClientCacheTest class...
@@ -77,28 +76,28 @@ public class SpringGemFireClientCacheTest {
 
 	@Test
 	public void computeFactorials() {
-		assertThat(factorials.get(0l), is(equalTo(1l)));
-		assertThat(factorials.get(1l), is(equalTo(1l)));
-		assertThat(factorials.get(2l), is(equalTo(2l)));
-		assertThat(factorials.get(3l), is(equalTo(6l)));
-		assertThat(factorials.get(4l), is(equalTo(24l)));
-		assertThat(factorials.get(5l), is(equalTo(120l)));
-		assertThat(factorials.get(6l), is(equalTo(720l)));
-		assertThat(factorials.get(7l), is(equalTo(5040l)));
-		assertThat(factorials.get(8l), is(equalTo(40320l)));
-		assertThat(factorials.get(9l), is(equalTo(362880l)));
-		assertThat(factorials.get(10l), is(equalTo(3628800l)));
+		assertThat(factorials.get(0L), is(equalTo(1L)));
+		assertThat(factorials.get(1L), is(equalTo(1L)));
+		assertThat(factorials.get(2L), is(equalTo(2L)));
+		assertThat(factorials.get(3L), is(equalTo(6L)));
+		assertThat(factorials.get(4L), is(equalTo(24L)));
+		assertThat(factorials.get(5L), is(equalTo(120L)));
+		assertThat(factorials.get(6L), is(equalTo(720L)));
+		assertThat(factorials.get(7L), is(equalTo(5040L)));
+		assertThat(factorials.get(8L), is(equalTo(40320L)));
+		assertThat(factorials.get(9L), is(equalTo(362880L)));
+		assertThat(factorials.get(10L), is(equalTo(3628800L)));
 	}
 
 	@Configuration
 	public static class SpringGemFireClientConfiguration {
 
-		int intValue(Long value) {
+		static int intValue(Number value) {
 			return value.intValue();
 		}
 
 		@Bean
-		PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
+		static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
 			return new PropertySourcesPlaceholderConfigurer();
 		}
 
@@ -111,28 +110,6 @@ public class SpringGemFireClientCacheTest {
 			return gemfireProperties;
 		}
 
-		@Bean(name = GemfireConstants.DEFAULT_GEMFIRE_POOL_NAME)
-		PoolFactoryBean gemfirePool(@Value("${gemfire.cache.server.host:localhost}") String host,
-			@Value("${gemfire.cache.server.port:12480}") int port)
-		{
-			PoolFactoryBean gemfirePool = new PoolFactoryBean();
-
-			gemfirePool.setName(GemfireConstants.DEFAULT_GEMFIRE_POOL_NAME);
-			gemfirePool.setFreeConnectionTimeout(intValue(TimeUnit.SECONDS.toMillis(5)));
-			gemfirePool.setKeepAlive(false);
-			gemfirePool.setMaxConnections(SpringGemFireServerApplication.DEFAULT_MAX_CONNECTIONS);
-			gemfirePool.setMinConnections(1);
-			gemfirePool.setPingInterval(TimeUnit.SECONDS.toMillis(5));
-			gemfirePool.setReadTimeout(intValue(TimeUnit.SECONDS.toMillis(2))); // 2 seconds
-			gemfirePool.setRetryAttempts(1);
-			gemfirePool.setSubscriptionEnabled(true);
-			gemfirePool.setThreadLocalConnections(false);
-
-			gemfirePool.setServers(Collections.singletonList(new ConnectionEndpoint(host, port)));
-
-			return gemfirePool;
-		}
-
 		@Bean
 		ClientCacheFactoryBean gemfireCache(@Qualifier("gemfireProperties") Properties gemfireProperties) {
 			ClientCacheFactoryBean gemfireCache = new ClientCacheFactoryBean();
@@ -141,6 +118,27 @@ public class SpringGemFireClientCacheTest {
 			gemfireCache.setProperties(gemfireProperties);
 
 			return gemfireCache;
+		}
+
+		@Bean(name = GemfireConstants.DEFAULT_GEMFIRE_POOL_NAME)
+		PoolFactoryBean gemfirePool(
+			  @Value("${gemfire.cache.server.host:localhost}") String host,
+			  @Value("${gemfire.cache.server.port:40404}") int port) {
+
+			PoolFactoryBean gemfirePool = new PoolFactoryBean();
+
+			gemfirePool.setName(GemfireConstants.DEFAULT_GEMFIRE_POOL_NAME);
+			gemfirePool.setFreeConnectionTimeout(intValue(TimeUnit.SECONDS.toMillis(5)));
+			gemfirePool.setKeepAlive(false);
+			gemfirePool.setPingInterval(TimeUnit.SECONDS.toMillis(5));
+			gemfirePool.setReadTimeout(intValue(TimeUnit.SECONDS.toMillis(5)));
+			gemfirePool.setRetryAttempts(1);
+			gemfirePool.setSubscriptionEnabled(true);
+			gemfirePool.setThreadLocalConnections(false);
+
+			gemfirePool.setServers(Collections.singletonList(new ConnectionEndpoint(host, port)));
+
+			return gemfirePool;
 		}
 
 		@Bean(name = "Factorials")
