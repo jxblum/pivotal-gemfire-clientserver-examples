@@ -19,17 +19,16 @@ package io.pivotal.gemfire.main;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheFactory;
+import org.apache.geode.cache.CacheLoader;
+import org.apache.geode.cache.CacheLoaderException;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.LoaderHelper;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionFactory;
+import org.apache.geode.cache.server.CacheServer;
 import org.springframework.util.StringUtils;
-
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheFactory;
-import com.gemstone.gemfire.cache.CacheLoader;
-import com.gemstone.gemfire.cache.CacheLoaderException;
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.LoaderHelper;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.RegionFactory;
-import com.gemstone.gemfire.cache.server.CacheServer;
 
 /**
  * The GemFireServerApplication class...
@@ -44,28 +43,32 @@ public class GemFireServerApplication {
 	public static final int DEFAULT_MAX_TIME_BETWEEN_PINGS = 60000;
 
 	public static void main(String[] args) throws Exception {
+
 		Cache gemfireCache = gemfireCache(gemfireProperties());
+
 		cubesRegion(gemfireCache);
 		gemfireCacheServer(gemfireCache);
 		registerShutdownHook(gemfireCache);
 	}
 
 	static String systemProperty(String propertyName, String defaultValue) {
+
 		String propertyValue = System.getProperty(propertyName);
+
 		return (StringUtils.hasText(propertyValue) ? propertyValue : defaultValue);
 	}
 
 	static Properties gemfireProperties() {
+
 		Properties gemfireProperties = new Properties();
 
 		gemfireProperties.setProperty("name", GemFireServerApplication.class.getSimpleName());
-		gemfireProperties.setProperty("mcast-port", "0");
 		gemfireProperties.setProperty("log-level", systemProperty("gemfire.log.level", "config"));
 		gemfireProperties.setProperty("locators", systemProperty("gemfire.locator.host-port", "localhost[11235]"));
-		gemfireProperties.setProperty("start-locator", systemProperty("gemfire.locator.host-port", "localhost[11235]"));
 		gemfireProperties.setProperty("jmx-manager", "true");
 		gemfireProperties.setProperty("jmx-manager-port", systemProperty("gemfire.manager.port", "1199"));
 		gemfireProperties.setProperty("jmx-manager-start", "true");
+		gemfireProperties.setProperty("start-locator", systemProperty("gemfire.locator.host-port", "localhost[11235]"));
 
 		return gemfireProperties;
 	}
@@ -75,6 +78,7 @@ public class GemFireServerApplication {
 	}
 
 	static CacheServer gemfireCacheServer(Cache gemfireCache) throws IOException {
+
 		CacheServer gemfireCacheServer = gemfireCache.addCacheServer();
 
 		gemfireCacheServer.setBindAddress(systemProperty("gemfire.cache.server.bind-address", "localhost"));
@@ -88,6 +92,7 @@ public class GemFireServerApplication {
 	}
 
 	static Region<Long, Long> cubesRegion(Cache gemfireCache) {
+
 		RegionFactory<Long, Long> cubesRegionFactory = gemfireCache.createRegionFactory();
 
 		cubesRegionFactory.setCacheLoader(cubesCacheLoader());
@@ -99,6 +104,7 @@ public class GemFireServerApplication {
 	}
 
 	static CacheLoader<Long, Long> cubesCacheLoader() {
+
 		return new CacheLoader<Long, Long>() {
 			public Long load(final LoaderHelper<Long, Long> helper) throws CacheLoaderException {
 				long number = helper.getKey();
@@ -113,5 +119,4 @@ public class GemFireServerApplication {
 	static void registerShutdownHook(Cache gemfireCache) {
 		Runtime.getRuntime().addShutdownHook(new Thread(gemfireCache::close, "GemFire Server Shutdown Thread"));
 	}
-
 }

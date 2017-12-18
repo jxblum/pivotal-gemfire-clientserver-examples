@@ -27,9 +27,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.Region;
-
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -49,6 +48,7 @@ public class SpringGemFireClientCacheXmlTest {
 
 	@Before
 	public void setup() {
+
 		assertThat(squares, is(notNullValue()));
 		assertThat(squares.getName(), is(equalTo("Squares")));
 		assertThat(squares.getFullPath(), is(equalTo(String.format("%1$sSquares", Region.SEPARATOR))));
@@ -59,6 +59,7 @@ public class SpringGemFireClientCacheXmlTest {
 
 	@Test
 	public void computeSquares() {
+
 		assertThat(squares.get(0L), is(equalTo(0L)));
 		assertThat(squares.get(1L), is(equalTo(1L)));
 		assertThat(squares.get(2L), is(equalTo(4L)));

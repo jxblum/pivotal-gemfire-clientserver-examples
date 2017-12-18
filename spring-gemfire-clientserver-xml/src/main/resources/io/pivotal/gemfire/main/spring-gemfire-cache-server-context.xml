@@ -15,17 +15,16 @@
 
 	<util:properties id="gemfireProperties">
 		<prop key="name">SpringGemFireServerXmlApplication</prop>
-		<prop key="mcast-port">0</prop>
 		<prop key="log-level">${gemfire.log.level:config}</prop>
-		<prop key="start-locator">${gemfire.locator.host-port:localhost[10334]}</prop>
 		<prop key="jmx-manager">true</prop>
-		<prop key="jmx-manager-port">${gemfire.manager.port:1199}</prop>
+		<prop key="jmx-manager-port">${gemfire.manager.port:1099}</prop>
 		<prop key="jmx-manager-start">true</prop>
+		<prop key="start-locator">${gemfire.locator.host-port:localhost[10334]}</prop>
 	</util:properties>
 
 	<gfe:cache properties-ref="gemfireProperties"/>
 
-	<gfe:cache-server id="gemfireCacheServer" auto-startup="true"
+	<gfe:cache-server auto-startup="true"
 					  bind-address="${gemfire.cache.server.bind-address:localhost}"
 					  host-name-for-clients="${gemfire.cache.server.hostname-for-clients:localhost}"
 					  port="${gemfire.cache.server.port:40404}"/>

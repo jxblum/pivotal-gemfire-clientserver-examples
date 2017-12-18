@@ -18,12 +18,11 @@ package io.pivotal.gemfire.main;
 
 import java.util.Properties;
 
-import com.gemstone.gemfire.cache.Cache;
-import com.gemstone.gemfire.cache.CacheLoader;
-import com.gemstone.gemfire.cache.CacheLoaderException;
-import com.gemstone.gemfire.cache.LoaderHelper;
-import com.gemstone.gemfire.cache.RegionAttributes;
-
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.CacheLoader;
+import org.apache.geode.cache.CacheLoaderException;
+import org.apache.geode.cache.LoaderHelper;
+import org.apache.geode.cache.RegionAttributes;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
@@ -45,7 +44,7 @@ import org.springframework.data.gemfire.server.CacheServerFactoryBean;
 @SuppressWarnings("unused")
 public class SpringGemFireServerApplication {
 
-	static final boolean DEFAULT_AUTO_STARTUP = true;
+	private static final boolean DEFAULT_AUTO_STARTUP = true;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringGemFireServerApplication.class, args);
@@ -56,7 +55,7 @@ public class SpringGemFireServerApplication {
 		return new PropertyPlaceholderConfigurer();
 	}
 
-	String applicationName() {
+	private String applicationName() {
 		return SpringGemFireServerApplication.class.getSimpleName();
 	}
 
@@ -69,7 +68,6 @@ public class SpringGemFireServerApplication {
 		Properties gemfireProperties = new Properties();
 
 		gemfireProperties.setProperty("name", applicationName());
-		gemfireProperties.setProperty("mcast-port", "0");
 		gemfireProperties.setProperty("log-level", logLevel);
 		gemfireProperties.setProperty("start-locator", locatorHostPort);
 		gemfireProperties.setProperty("jmx-manager", "true");
@@ -81,6 +79,7 @@ public class SpringGemFireServerApplication {
 
 	@Bean
 	CacheFactoryBean gemfireCache(@Qualifier("gemfireProperties") Properties gemfireProperties) {
+
 		CacheFactoryBean gemfireCache = new CacheFactoryBean();
 
 		gemfireCache.setClose(true);
@@ -124,6 +123,7 @@ public class SpringGemFireServerApplication {
 	@Bean
 	@SuppressWarnings("unchecked")
 	RegionAttributesFactoryBean factorialsRegionAttributes() {
+
 		RegionAttributesFactoryBean factorialsRegionAttributes = new RegionAttributesFactoryBean();
 
 		factorialsRegionAttributes.setCacheLoader(factorialsCacheLoader());
@@ -142,9 +142,10 @@ public class SpringGemFireServerApplication {
 		// stupid, naive implementation of Factorial!
     @Override
 		public Long load(LoaderHelper<Long, Long> loaderHelper) throws CacheLoaderException {
+
 			long number = loaderHelper.getKey();
 
-			assert number >= 0 : String.format("Number [%1$d] must be greater than equal to 0", number);
+			assert number >= 0 : String.format("Number [%d] must be greater than equal to 0", number);
 
 			if (number <= 2L) {
 				return (number < 2L ? 1L : 2L);

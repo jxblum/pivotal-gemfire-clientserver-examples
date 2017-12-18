@@ -29,12 +29,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.client.ClientCache;
-import com.gemstone.gemfire.cache.client.ClientCacheFactory;
-import com.gemstone.gemfire.cache.client.ClientRegionFactory;
-import com.gemstone.gemfire.cache.client.ClientRegionShortcut;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientCacheFactory;
+import org.apache.geode.cache.client.ClientRegionFactory;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 
 import io.pivotal.gemfire.main.GemFireServerApplication;
 
@@ -52,6 +52,7 @@ public class GemFireClientCacheTest {
 
 	@BeforeClass
 	public static void setupGemFire() {
+
 		clientCache = new ClientCacheFactory(gemfireProperties())
 			.setPoolFreeConnectionTimeout(5000) // 5 seconds
 			.setPoolIdleTimeout(TimeUnit.SECONDS.toMillis(10))
@@ -66,8 +67,8 @@ public class GemFireClientCacheTest {
 				Integer.getInteger("gemfire.cache.server.port", 12480))
 			.create();
 
-		ClientRegionFactory<Long, Long> cubesRegionFactory = clientCache.createClientRegionFactory(
-			ClientRegionShortcut.PROXY);
+		ClientRegionFactory<Long, Long> cubesRegionFactory =
+			clientCache.createClientRegionFactory(ClientRegionShortcut.PROXY);
 
 		cubesRegionFactory.setKeyConstraint(Long.class);
 		cubesRegionFactory.setValueConstraint(Long.class);
@@ -75,9 +76,12 @@ public class GemFireClientCacheTest {
 		cubes = cubesRegionFactory.create("Cubes");
 	}
 
-	static Properties gemfireProperties() {
+	private static Properties gemfireProperties() {
+
 		Properties gemfireProperties = new Properties();
+
 		gemfireProperties.setProperty("log-level", System.getProperty("gemfire.log.level", "config"));
+
 		return gemfireProperties;
 	}
 
@@ -90,6 +94,7 @@ public class GemFireClientCacheTest {
 
 	@Before
 	public void setup() {
+
 		assertThat(cubes, is(notNullValue()));
 		assertThat(cubes.getName(), is(equalTo("Cubes")));
 		assertThat(cubes.getFullPath(), is(equalTo(String.format("%1$sCubes", Region.SEPARATOR))));
@@ -100,17 +105,18 @@ public class GemFireClientCacheTest {
 
 	@Test
 	public void computeCubes() {
-		assertThat(cubes.get(0l), is(equalTo(0l)));
-		assertThat(cubes.get(1l), is(equalTo(1l)));
-		assertThat(cubes.get(2l), is(equalTo(8l)));
-		assertThat(cubes.get(3l), is(equalTo(27l)));
-		assertThat(cubes.get(4l), is(equalTo(64l)));
-		assertThat(cubes.get(5l), is(equalTo(125l)));
-		assertThat(cubes.get(6l), is(equalTo(216l)));
-		assertThat(cubes.get(7l), is(equalTo(343l)));
-		assertThat(cubes.get(8l), is(equalTo(512l)));
-		assertThat(cubes.get(9l), is(equalTo(729l)));
-		assertThat(cubes.get(10l), is(equalTo(1000l)));
+
+		assertThat(cubes.get(0L), is(equalTo(0L)));
+		assertThat(cubes.get(1L), is(equalTo(1L)));
+		assertThat(cubes.get(2L), is(equalTo(8L)));
+		assertThat(cubes.get(3L), is(equalTo(27L)));
+		assertThat(cubes.get(4L), is(equalTo(64L)));
+		assertThat(cubes.get(5L), is(equalTo(125L)));
+		assertThat(cubes.get(6L), is(equalTo(216L)));
+		assertThat(cubes.get(7L), is(equalTo(343L)));
+		assertThat(cubes.get(8L), is(equalTo(512L)));
+		assertThat(cubes.get(9L), is(equalTo(729L)));
+		assertThat(cubes.get(10L), is(equalTo(1000L)));
 	}
 
 }

@@ -28,10 +28,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.client.ClientCache;
-import com.gemstone.gemfire.cache.client.ClientCacheFactory;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientCacheFactory;
 
 import io.pivotal.gemfire.main.GemFireServerXmlApplication;
 
@@ -59,14 +59,18 @@ public class GemFireClientCacheXmlTest {
 		squareRoots = clientCache.getRegion("SquareRoots");
 	}
 
-	static Properties gemfireProperties() {
+	private static Properties gemfireProperties() {
+
 		Properties gemfireProperties = new Properties();
+
 		gemfireProperties.setProperty("log-level", System.getProperty("gemfire.log.level", "config"));
+
 		return gemfireProperties;
 	}
 
 	@AfterClass
 	public static void tearDownGemFire() {
+
 		if (clientCache != null) {
 			clientCache.close(false);
 		}
@@ -74,6 +78,7 @@ public class GemFireClientCacheXmlTest {
 
 	@Before
 	public void setup() {
+
 		assertThat(squareRoots, is(notNullValue()));
 		assertThat(squareRoots.getName(), is(equalTo("SquareRoots")));
 		assertThat(squareRoots.getFullPath(), is(equalTo(String.format("%1$sSquareRoots", Region.SEPARATOR))));
@@ -84,17 +89,17 @@ public class GemFireClientCacheXmlTest {
 
 	@Test
 	public void computeSquareRoots() {
-		assertThat(squareRoots.get(100l), is(equalTo(10l)));
-		assertThat(squareRoots.get(81l), is(equalTo(9l)));
-		assertThat(squareRoots.get(64l), is(equalTo(8l)));
-		assertThat(squareRoots.get(49l), is(equalTo(7l)));
-		assertThat(squareRoots.get(36l), is(equalTo(6l)));
-		assertThat(squareRoots.get(25l), is(equalTo(5l)));
-		assertThat(squareRoots.get(16l), is(equalTo(4l)));
-		assertThat(squareRoots.get(9l), is(equalTo(3l)));
-		assertThat(squareRoots.get(4l), is(equalTo(2l)));
-		assertThat(squareRoots.get(1l), is(equalTo(1l)));
-		assertThat(squareRoots.get(0l), is(equalTo(0l)));
-	}
 
+		assertThat(squareRoots.get(100L), is(equalTo(10L)));
+		assertThat(squareRoots.get(81L), is(equalTo(9L)));
+		assertThat(squareRoots.get(64L), is(equalTo(8L)));
+		assertThat(squareRoots.get(49L), is(equalTo(7L)));
+		assertThat(squareRoots.get(36L), is(equalTo(6L)));
+		assertThat(squareRoots.get(25L), is(equalTo(5L)));
+		assertThat(squareRoots.get(16L), is(equalTo(4L)));
+		assertThat(squareRoots.get(9L), is(equalTo(3L)));
+		assertThat(squareRoots.get(4L), is(equalTo(2L)));
+		assertThat(squareRoots.get(1L), is(equalTo(1L)));
+		assertThat(squareRoots.get(0L), is(equalTo(0L)));
+	}
 }

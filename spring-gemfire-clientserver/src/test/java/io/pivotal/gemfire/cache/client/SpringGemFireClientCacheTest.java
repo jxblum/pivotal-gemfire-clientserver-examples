@@ -31,12 +31,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.gemstone.gemfire.cache.DataPolicy;
-import com.gemstone.gemfire.cache.Region;
-import com.gemstone.gemfire.cache.client.ClientCache;
-import com.gemstone.gemfire.cache.client.ClientRegionShortcut;
-import com.gemstone.gemfire.cache.client.Pool;
-
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientRegionShortcut;
+import org.apache.geode.cache.client.Pool;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -45,7 +44,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.client.PoolFactoryBean;
-import org.springframework.data.gemfire.config.GemfireConstants;
+import org.springframework.data.gemfire.config.xml.GemfireConstants;
 import org.springframework.data.gemfire.support.ConnectionEndpoint;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -66,6 +65,7 @@ public class SpringGemFireClientCacheTest {
 
 	@Before
 	public void setup() {
+
 		assertThat(factorials, is(notNullValue()));
 		assertThat(factorials.getName(), is(equalTo("Factorials")));
 		assertThat(factorials.getFullPath(), is(equalTo(String.format("%1$sFactorials", Region.SEPARATOR))));
@@ -76,6 +76,7 @@ public class SpringGemFireClientCacheTest {
 
 	@Test
 	public void computeFactorials() {
+
 		assertThat(factorials.get(0L), is(equalTo(1L)));
 		assertThat(factorials.get(1L), is(equalTo(1L)));
 		assertThat(factorials.get(2L), is(equalTo(2L)));
@@ -112,6 +113,7 @@ public class SpringGemFireClientCacheTest {
 
 		@Bean
 		ClientCacheFactoryBean gemfireCache(@Qualifier("gemfireProperties") Properties gemfireProperties) {
+
 			ClientCacheFactoryBean gemfireCache = new ClientCacheFactoryBean();
 
 			gemfireCache.setClose(true);
@@ -143,10 +145,10 @@ public class SpringGemFireClientCacheTest {
 
 		@Bean(name = "Factorials")
 		ClientRegionFactoryBean<Long, Long> factorialsRegion(ClientCache gemfireCache, Pool gemfirePool) {
+
 			ClientRegionFactoryBean<Long, Long> factorialsRegion = new ClientRegionFactoryBean<>();
 
 			factorialsRegion.setCache(gemfireCache);
-			factorialsRegion.setName("Factorials");
 			factorialsRegion.setPool(gemfirePool);
 			factorialsRegion.setShortcut(ClientRegionShortcut.PROXY);
 

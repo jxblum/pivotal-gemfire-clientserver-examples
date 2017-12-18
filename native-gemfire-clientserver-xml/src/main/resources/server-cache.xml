@@ -1,9 +1,12 @@
-<?xml version="1.0"?>
-<!DOCTYPE cache PUBLIC  "-//GemStone Systems, Inc.//GemFire Declarative Caching 8.1//EN"
-	"http://www.gemstone.com/dtd/cache8_0.dtd">
-<cache>
+<?xml version="1.0" encoding="UTF-8"?>
+<cache xmlns="http://geode.apache.org/schema/cache"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://geode.apache.org/schema/cache http://geode.apache.org/schema/cache/cache-1.0.xsd"
+			 version="1.0">
+
 	<cache-server bind-address="${BIND_ADDRESS}" hostname-for-clients="${HOSTNAME_FOR_CLIENTS}" port="${PORT}"
 				  max-connections="${MAX_CONNECTIONS}" maximum-time-between-pings="${MAX_TIME_BETWEEN_PINGS}"/>
+
 	<region name="SquareRoots" refid="PARTITION">
 		<region-attributes>
 			<key-constraint>java.lang.Long</key-constraint>
@@ -13,4 +16,5 @@
 			</cache-loader>
 		</region-attributes>
 	</region>
+
 </cache>
